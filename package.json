@@ -1,0 +1,51 @@
+{
+  "name": "webcore-v2",
+  "version": "2.0.0",
+  "description": "WebCore - Advanced Content Management System with Plugin Support",
+  "private": true,
+  "scripts": {
+    "client-install": "cd client && npm install",
+    "server-install": "cd server && npm install",
+    "install-all": "npm run client-install && npm run server-install",
+    "dev": "concurrently \"cd client && npm run dev\" \"cd server && npm run dev\"",
+    "start": "concurrently \"cd client && npm run preview\" \"cd server && npm start\"",
+    "build": "npm run server-build && npm run client-build",
+    "server-build": "cd server && npm run build",
+    "client-build": "cd client && npm run build",
+    "test": "npm run server-test && npm run client-test",
+    "server-test": "cd server && npm test",
+    "client-test": "cd client && npm test",
+    "lint": "npm run server-lint && npm run client-lint",
+    "server-lint": "cd server && npm run lint",
+    "client-lint": "cd client && npm run lint",
+    "clean": "npm run server-clean && npm run client-clean",
+    "server-clean": "cd server && npm run clean",
+    "client-clean": "cd client && npm run clean",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "keywords": [
+    "cms",
+    "content-management",
+    "plugin-system",
+    "nodejs",
+    "react",
+    "typescript",
+    "postgresql",
+    "prisma"
+  ],
+  "author": "WebCore Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/webcore-v2.git"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+
+
+}

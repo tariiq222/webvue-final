@@ -1,0 +1,270 @@
+// 🗄️ WebCore Database Schema
+// مخطط قاعدة بيانات WebCore
+//
+// This is the main database schema for the WebCore application.
+// It defines all tables, relationships, and constraints.
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 👤 User Management Tables
+// جداول إدارة المستخدمين
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  username          String    @unique
+  password          String
+  firstName         String
+  lastName          String
+  avatar            String?
+  isActive          Boolean   @default(true)
+  emailVerified     Boolean   @default(false)
+  emailVerifiedAt   DateTime?
+  twoFactorEnabled  Boolean   @default(false)
+  twoFactorSecret   String?
+  lastLoginAt       DateTime?
+  lastLoginIp       String?
+  passwordChangedAt DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relationships
+  userRoles         UserRole[]
+  sessions          Session[]
+  auditLogs         AuditLog[]
+  notifications     Notification[]
+  uploadedFiles     UploadedFile[]
+  createdPlugins    Plugin[]   @relation("PluginCreator")
+  createdSettings   Setting[]  @relation("SettingCreator")
+  refreshTokens     RefreshToken[]
+
+  @@map("users")
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  resource    String
+  action      String
+  description String?
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  rolePermissions RolePermission[]
+
+  @@unique([resource, action])
+  @@map("permissions")
+}
+
+model UserRole {
+  id     String @id @default(cuid())
+  userId String
+  roleId String
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  id           String @id @default(cuid())
+  roleId       String
+  permissionId String
+
+  // Relationships
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+// 🔐 Authentication Tables
+// جداول المصادقة
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  ipAddress String
+  userAgent String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@map("password_resets")
+}
+
+model EmailVerification {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  verifiedAt DateTime?
+  createdAt DateTime @default(now())
+
+  @@map("email_verifications")
+}
+
+// 🔌 Plugin Management Tables
+// جداول إدارة البلوجينز
+
+model Plugin {
+  id           String    @id @default(cuid())
+  name         String    @unique
+  version      String
+  description  String?
+  author       String
+  isActive     Boolean   @default(false)
+  isSystem     Boolean   @default(false)
+  configSchema Json?
+  config       Json?
+  filePath     String
+  fileSize     Int
+  checksum     String
+  installedAt  DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  createdBy    String
+
+  // Relationships
+  creator User @relation("PluginCreator", fields: [createdBy], references: [id])
+
+  @@map("plugins")
+}
+
+// ⚙️ Settings Management Tables
+// جداول إدارة الإعدادات
+
+model Setting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       Json
+  type        String   // 'string', 'number', 'boolean', 'object', 'array'
+  category    String
+  description String?
+  isPublic    Boolean  @default(false)
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String?
+
+  // Relationships
+  creator User? @relation("SettingCreator", fields: [createdBy], references: [id])
+
+  @@map("settings")
+}
+
+// 📢 Notification Tables
+// جداول الإشعارات
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      String   // 'info', 'success', 'warning', 'error'
+  isRead    Boolean  @default(false)
+  data      Json?
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+// 📊 Audit and Logging Tables
+// جداول التدقيق والسجلات
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  action     String
+  resource   String
+  resourceId String?
+  details    Json?
+  ipAddress  String
+  userAgent  String
+  createdAt  DateTime @default(now())
+
+  // Relationships
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map("audit_logs")
+}
+
+// 📁 File Management Tables
+// جداول إدارة الملفات
+
+model UploadedFile {
+  id           String   @id @default(cuid())
+  originalName String
+  filename     String   @unique
+  mimetype     String
+  size         Int
+  path         String
+  url          String
+  uploadedBy   String
+  createdAt    DateTime @default(now())
+
+  // Relationships
+  uploader User @relation(fields: [uploadedBy], references: [id])
+
+  @@map("uploaded_files")
+}

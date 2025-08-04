@@ -1,0 +1,39 @@
+
+import { useToast } from "@/hooks/useToast"
+import {
+  Toast,
+  ToastClose,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+} from "@/components/ui/toast"
+
+export function Toaster() {
+  const { toasts } = useToast()
+
+  return (
+    <ToastProvider>
+      {toasts.map(function ({ id, title, description, action, ...props }) {
+        // تحقق آمن من نوع العنوان قبل استدعاء toLowerCase
+        if (title && typeof title === 'string' && title.toLowerCase() === 'error') {
+          console.error("Toast Error", { title, description });
+        }
+        return (
+          <Toast key={id} {...props}>
+            <div className="grid gap-1 select-text">
+              {title && <ToastTitle>{title}</ToastTitle>}
+              {description && (
+                <ToastDescription>{description}</ToastDescription>
+              )}
+            </div>
+            {action}
+            <ToastClose />
+          </Toast>
+        )
+      })}
+      <ToastViewport />
+    </ToastProvider>
+  )
+}
+

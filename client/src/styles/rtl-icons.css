@@ -1,0 +1,305 @@
+/**
+ * RTL Icon Support
+ * دعم الأيقونات في الوضع العربي
+ */
+
+/* Base RTL icon utilities */
+.icon-start {
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .icon-start {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+.icon-end {
+  margin-left: 0.5rem;
+}
+
+[dir="rtl"] .icon-end {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+/* Button icons */
+.btn-icon-start {
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .btn-icon-start {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+.btn-icon-end {
+  margin-left: 0.5rem;
+}
+
+[dir="rtl"] .btn-icon-end {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+/* Search field icons */
+.search-icon {
+  left: 0.75rem;
+}
+
+[dir="rtl"] .search-icon {
+  left: auto;
+  right: 0.75rem;
+}
+
+/* Input field icons */
+.input-icon-start {
+  left: 0.75rem;
+}
+
+[dir="rtl"] .input-icon-start {
+  left: auto;
+  right: 0.75rem;
+}
+
+.input-icon-end {
+  right: 0.75rem;
+}
+
+[dir="rtl"] .input-icon-end {
+  right: auto;
+  left: 0.75rem;
+}
+
+/* Padding for inputs with icons */
+.input-with-icon-start {
+  padding-left: 2.5rem;
+}
+
+[dir="rtl"] .input-with-icon-start {
+  padding-left: 0.75rem;
+  padding-right: 2.5rem;
+}
+
+.input-with-icon-end {
+  padding-right: 2.5rem;
+}
+
+[dir="rtl"] .input-with-icon-end {
+  padding-right: 0.75rem;
+  padding-left: 2.5rem;
+}
+
+/* Header and title icons */
+.title-icon {
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .title-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Menu item icons */
+.menu-icon {
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .menu-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Dropdown menu icons */
+.dropdown-icon {
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .dropdown-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Card header icons */
+.card-icon {
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .card-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Table action icons */
+.action-icon {
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .action-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Status badge icons */
+.badge-icon {
+  margin-right: 0.25rem;
+}
+
+[dir="rtl"] .badge-icon {
+  margin-right: 0;
+  margin-left: 0.25rem;
+}
+
+/* Navigation icons */
+.nav-icon {
+  margin-right: 0.75rem;
+}
+
+[dir="rtl"] .nav-icon {
+  margin-right: 0;
+  margin-left: 0.75rem;
+}
+
+/* Sidebar icons */
+.sidebar-icon {
+  margin-right: 0.75rem;
+}
+
+[dir="rtl"] .sidebar-icon {
+  margin-right: 0;
+  margin-left: 0.75rem;
+}
+
+/* Breadcrumb icons */
+.breadcrumb-icon {
+  margin-right: 0.25rem;
+}
+
+[dir="rtl"] .breadcrumb-icon {
+  margin-right: 0;
+  margin-left: 0.25rem;
+}
+
+/* Alert and notification icons */
+.alert-icon {
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .alert-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Form label icons */
+.label-icon {
+  margin-right: 0.25rem;
+}
+
+[dir="rtl"] .label-icon {
+  margin-right: 0;
+  margin-left: 0.25rem;
+}
+
+/* Tab icons */
+.tab-icon {
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .tab-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Sidebar navigation items - keep icon before text in Arabic */
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+}
+
+/* In RTL, keep the natural order (icon first, then text) */
+[dir="rtl"] .sidebar-nav-item {
+  flex-direction: row; /* Keep normal order: icon - text */
+}
+
+/* Sidebar text alignment */
+[dir="rtl"] .sidebar-nav-text {
+  text-align: right;
+  flex: 1;
+}
+
+/* Tabs RTL Support */
+[dir="rtl"] .tabs-list {
+  direction: rtl;
+}
+
+/* Tab triggers RTL - keep icon before text */
+[dir="rtl"] .tab-trigger {
+  flex-direction: row; /* Keep normal order: icon - text */
+  text-align: right;
+}
+
+/* Tab content RTL */
+[dir="rtl"] .tab-content {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Tab list grid RTL */
+[dir="rtl"] .tabs-list.grid {
+  direction: rtl;
+}
+
+/* Individual tab styling in RTL */
+[dir="rtl"] .tab-trigger .tab-icon {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+/* Loading spinner positioning */
+.loading-icon {
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .loading-icon {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Specific component adjustments */
+[dir="rtl"] .avatar-fallback {
+  transform: scaleX(-1);
+}
+
+/* Directional arrows - flip in RTL */
+[dir="rtl"] .arrow-icon {
+  transform: scaleX(-1);
+}
+
+/* Chevron icons - flip in RTL */
+[dir="rtl"] .chevron-icon {
+  transform: scaleX(-1);
+}
+
+/* More horizontal icon positioning */
+[dir="rtl"] .more-icon {
+  transform: scaleX(-1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .btn-icon-start,
+  .title-icon,
+  .dropdown-icon,
+  .tab-icon,
+  .icon-start {
+    margin-right: 0.25rem;
+  }
+
+  [dir="rtl"] .btn-icon-start,
+  [dir="rtl"] .title-icon,
+  [dir="rtl"] .dropdown-icon,
+  [dir="rtl"] .tab-icon,
+  [dir="rtl"] .icon-start {
+    margin-right: 0;
+    margin-left: 0.25rem;
+  }
+}
