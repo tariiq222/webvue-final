@@ -1,0 +1,189 @@
+# 🌍 Render.com Multi-Environment Configuration for WebCore v2
+
+# 🔧 Development Environment
+development:
+  databases:
+    - name: webcore-dev-db
+      databaseName: webcore_dev
+      user: webcore_dev
+      region: oregon
+
+  services:
+    # Backend Development
+    - type: web
+      name: webcore-dev-backend
+      env: node
+      rootDir: server
+      branch: development
+      buildCommand: npm install && npm run build
+      startCommand: npm start
+      plan: free # للتطوير
+      region: oregon
+      healthCheckPath: /api/health
+      envVars:
+        - key: NODE_ENV
+          value: development
+        - key: DATABASE_URL
+          fromDatabase:
+            name: webcore-dev-db
+            property: connectionString
+        - key: CORS_ORIGIN
+          value: https://webcore-dev-frontend.onrender.com
+        - key: LOG_LEVEL
+          value: debug
+
+    # Frontend Development
+    - type: web
+      name: webcore-dev-frontend
+      env: static
+      rootDir: client
+      branch: development
+      buildCommand: npm install && npm run build
+      staticPublishPath: dist
+      envVars:
+        - key: VITE_API_BASE_URL
+          value: https://webcore-dev-backend.onrender.com
+        - key: VITE_APP_NAME
+          value: WebCore Dev
+
+# 🧪 Testing Environment
+testing:
+  databases:
+    - name: webcore-test-db
+      databaseName: webcore_test
+      user: webcore_test
+      region: oregon
+
+  services:
+    # Backend Testing
+    - type: web
+      name: webcore-test-backend
+      env: node
+      rootDir: server
+      branch: testing
+      buildCommand: npm install && npm run build
+      startCommand: npm start
+      plan: starter
+      region: oregon
+      healthCheckPath: /api/health
+      envVars:
+        - key: NODE_ENV
+          value: testing
+        - key: DATABASE_URL
+          fromDatabase:
+            name: webcore-test-db
+            property: connectionString
+        - key: CORS_ORIGIN
+          value: https://webcore-test-frontend.onrender.com
+
+    # Frontend Testing
+    - type: web
+      name: webcore-test-frontend
+      env: static
+      rootDir: client
+      branch: testing
+      buildCommand: npm install && npm run build
+      staticPublishPath: dist
+      envVars:
+        - key: VITE_API_BASE_URL
+          value: https://webcore-test-backend.onrender.com
+        - key: VITE_APP_NAME
+          value: WebCore Test
+
+# 🎭 Staging Environment
+staging:
+  databases:
+    - name: webcore-staging-db
+      databaseName: webcore_staging
+      user: webcore_staging
+      region: oregon
+
+  services:
+    # Backend Staging
+    - type: web
+      name: webcore-staging-backend
+      env: node
+      rootDir: server
+      branch: staging
+      buildCommand: npm install && npm run build
+      startCommand: npm start
+      plan: starter
+      region: oregon
+      healthCheckPath: /api/health
+      envVars:
+        - key: NODE_ENV
+          value: staging
+        - key: DATABASE_URL
+          fromDatabase:
+            name: webcore-staging-db
+            property: connectionString
+        - key: CORS_ORIGIN
+          value: https://webcore-staging-frontend.onrender.com
+
+    # Frontend Staging
+    - type: web
+      name: webcore-staging-frontend
+      env: static
+      rootDir: client
+      branch: staging
+      buildCommand: npm install && npm run build
+      staticPublishPath: dist
+      envVars:
+        - key: VITE_API_BASE_URL
+          value: https://webcore-staging-backend.onrender.com
+        - key: VITE_APP_NAME
+          value: WebCore Staging
+
+# 🚀 Production Environment
+production:
+  databases:
+    - name: webcore-prod-db
+      databaseName: webcore
+      user: webcore
+      region: oregon
+
+  services:
+    # Backend Production
+    - type: web
+      name: webcore-backend
+      env: node
+      rootDir: server
+      branch: production
+      buildCommand: npm install && npm run build
+      startCommand: npm start
+      plan: standard # للإنتاج
+      region: oregon
+      healthCheckPath: /api/health
+      autoDeploy: false # يتطلب موافقة يدوية
+      envVars:
+        - key: NODE_ENV
+          value: production
+        - key: DATABASE_URL
+          fromDatabase:
+            name: webcore-prod-db
+            property: connectionString
+        - key: CORS_ORIGIN
+          value: https://webcore.onrender.com
+        - key: LOG_LEVEL
+          value: info
+
+    # Frontend Production
+    - type: web
+      name: webcore-frontend
+      env: static
+      rootDir: client
+      branch: production
+      buildCommand: npm install && npm run build
+      staticPublishPath: dist
+      autoDeploy: false # يتطلب موافقة يدوية
+      envVars:
+        - key: VITE_API_BASE_URL
+          value: https://webcore-backend.onrender.com
+        - key: VITE_APP_NAME
+          value: WebCore Dashboard
+
+# 📊 Environment URLs Summary:
+# Development: https://webcore-dev-frontend.onrender.com
+# Testing:     https://webcore-test-frontend.onrender.com
+# Staging:     https://webcore-staging-frontend.onrender.com
+# Production:  https://webcore.onrender.com
